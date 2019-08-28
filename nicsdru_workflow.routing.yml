@@ -23,11 +23,19 @@ nicsdru_workflow.audit_controller_confirm_audit:
   requirements:
     _permission: 'audit content'
 
+nicsdru.admin_config:
+  path: '/admin/config/nicsdru'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'NICS'
+  requirements:
+    _permission: 'access administration pages'
+
 nicsdru_workflow.audit_settings_form:
   path: '/admin/config/nicsdru_workflow/auditsettings'
   defaults:
     _form: '\Drupal\nicsdru_workflow\Form\AuditSettingsForm'
-    _title: 'NIDirect Audit Settings Form'
+    _title: 'NICS Audit Settings Form'
   requirements:
     _permission: 'access administration pages'
   options:

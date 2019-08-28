@@ -34,10 +34,15 @@ nicsdru_workflow.needs_audit:
   description: 'Needs Audit'
   parent: nicsdru_workflow.my_workbench
   weight: 4
+nicsdru.admin_config:
+  title: 'NICS'
+  description: 'Manage NICS settings'
+  parent: system.admin_config
+  route_name: nicsdru.admin_config
 nicsdru_workflow.audit_settings_form:
-  title: 'NIDirect Audit Settings Form'
+  title: 'NICS Audit Settings Form'
   route_name: nicsdru_workflow.audit_settings_form
   description: 'Configure audit settings and messages'
-  parent: nidirect.admin_config
+  parent: nicsdru.admin_config
   weight: 99
 
