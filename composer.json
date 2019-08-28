@@ -1,5 +1,5 @@
 {
-  "name": "dof-dss/nidcsdru_workflow",
+  "name": "dof-dss/nicsdru_workflow",
   "description": "Drupal module to provide workflow functionality for NICS websites",
   "type": "drupal-module",
   "authors": [
