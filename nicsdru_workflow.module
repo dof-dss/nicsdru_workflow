@@ -11,15 +11,15 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_page_attachments().
  */
-function nidirect_workflow_page_attachments(array &$attachments) {
+function nicsdru_workflow_page_attachments(array &$attachments) {
   // Attach extra custom css for admin menu.
-  $attachments['#attached']['library'][] = 'nidirect_workflow/admin.css';
+  $attachments['#attached']['library'][] = 'nicsdru_workflow/admin.css';
 }
 
 /**
  * Implements hook_entity_presave().
  */
-function nidirect_workflow_entity_presave(EntityInterface $entity) {
+function nicsdru_workflow_entity_presave(EntityInterface $entity) {
   // This will fire when nodes are created or edited.
   if ($entity->getEntityTypeId() == 'node') {
     switch ($entity->bundle()) {
@@ -42,7 +42,7 @@ function nidirect_workflow_entity_presave(EntityInterface $entity) {
 /**
  * Implements hook_form_alter().
  */
-function nidirect_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+function nicsdru_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 
   // Manage access to 'next audit date' field.
   if (in_array($form_id, [

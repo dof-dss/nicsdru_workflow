@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\nidirect_workflow\Controller;
+namespace Drupal\nicsdru_workflow\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
@@ -45,7 +45,7 @@ class ModerationStateController extends ControllerBase implements ContainerInjec
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('logger.factory')->get('nidirect_workflow')
+      $container->get('logger.factory')->get('nicsdru_workflow')
     );
   }
 

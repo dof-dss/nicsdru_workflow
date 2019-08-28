@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\nidirect_workflow\Controller;
+namespace Drupal\nicsdru_workflow\Controller;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -58,7 +58,7 @@ class AuditController extends ControllerBase implements ContainerInjectionInterf
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('entity_type.manager'),
-      $container->get('logger.factory')->get('nidirect_workflow'),
+      $container->get('logger.factory')->get('nicsdru_workflow'),
       $container->get('current_user')
     );
   }
@@ -76,8 +76,8 @@ class AuditController extends ControllerBase implements ContainerInjectionInterf
       $node = $this->entityTypeManager()->getStorage('node')->load($nid);
       if ($node) {
         // Retrieve audit text from config.
-        $audit_button_text = $this->config('nidirect_workflow.auditsettings')->get('audit_button_text');
-        $audit_confirmation_text = $this->config('nidirect_workflow.auditsettings')->get('audit_confirmation_text');
+        $audit_button_text = $this->config('nicsdru_workflow.auditsettings')->get('audit_button_text');
+        $audit_confirmation_text = $this->config('nicsdru_workflow.auditsettings')->get('audit_confirmation_text');
         // Show confirmation text to user.
         $render_array['confirmation_text'] = [
           '#markup' => $this->t($audit_confirmation_text),
@@ -87,7 +87,7 @@ class AuditController extends ControllerBase implements ContainerInjectionInterf
         ];
         // Build a confirm link.
         $link_object = Link::createFromRoute($this->t($audit_button_text),
-          'nidirect_workflow.audit_controller_confirm_audit',
+          'nicsdru_workflow.audit_controller_confirm_audit',
           ['nid' => $nid],
           ['attributes' => ['rel' => 'nofollow', 'class' => 'audit_link']]);
         // Add confirm link to render array.

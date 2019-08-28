@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\nidirect_workflow\Form;
+namespace Drupal\nicsdru_workflow\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ class AuditSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'nidirect_workflow.auditsettings',
+      'nicsdru_workflow.auditsettings',
     ];
   }
 
@@ -30,7 +30,7 @@ class AuditSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('nidirect_workflow.auditsettings');
+    $config = $this->config('nicsdru_workflow.auditsettings');
 
     $form['audit_button_text'] = [
       '#type' => 'textfield',
@@ -64,7 +64,7 @@ class AuditSettingsForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $this->config('nidirect_workflow.auditsettings')
+    $this->config('nicsdru_workflow.auditsettings')
       ->set('audit_button_text', $form_state->getValue('audit_button_text'))
       ->set('audit_button_hover_text', $form_state->getValue('audit_button_hover_text'))
       ->set('audit_confirmation_text', $form_state->getValue('audit_confirmation_text'))

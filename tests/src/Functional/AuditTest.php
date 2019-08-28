@@ -1,8 +1,8 @@
 <?php
 
-namespace Drupal\Tests\nidirect_workflow\Functional;
+namespace Drupal\Tests\nicsdru_workflow\Functional;
 
-use Drupal\nidirect_workflow\Controller\AuditController;
+use Drupal\nicsdru_workflow\Controller\AuditController;
 use Drupal\Tests\BrowserTestBase;
 use Drupal\node\Entity\Node;
 
@@ -18,7 +18,7 @@ class AuditTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['nidirect_workflow', 'node'];
+  public static $modules = ['nicsdru_workflow', 'node'];
 
   /**
    * Use install profile so that we have all content types, modules etc.
