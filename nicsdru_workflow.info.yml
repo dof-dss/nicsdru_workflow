@@ -3,3 +3,6 @@ type: module
 description: 'NICS Workflow enhancements'
 core: 8.x
 package: 'NICS-Dru'
+dependencies:
+  - content_moderation
+  - workflows
