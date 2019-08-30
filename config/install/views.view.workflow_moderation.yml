@@ -6,13 +6,7 @@ dependencies:
     - user.role.admin_user
     - user.role.administrator
     - user.role.author_user
-    - user.role.driving_instructor_supervisor_user
     - user.role.editor_user
-    - user.role.gp_author_user
-    - user.role.gp_supervisor_user
-    - user.role.health_condition_author_user
-    - user.role.health_condition_supervisor_user
-    - user.role.news_supervisor
     - user.role.supervisor_user
     - workflows.workflow.editorial
   module:
@@ -40,16 +34,10 @@ display:
         options:
           role:
             administrator: administrator
-            gp_author_user: gp_author_user
             author_user: author_user
-            gp_supervisor_user: gp_supervisor_user
-            news_supervisor: news_supervisor
             supervisor_user: supervisor_user
             editor_user: editor_user
             admin_user: admin_user
-            health_condition_author_user: health_condition_author_user
-            health_condition_supervisor_user: health_condition_supervisor_user
-            driving_instructor_supervisor_user: driving_instructor_supervisor_user
       cache:
         type: tag
         options: {  }
