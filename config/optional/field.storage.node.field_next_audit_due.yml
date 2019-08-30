@@ -1,0 +1,20 @@
+uuid: d8bff956-aef4-48c4-905f-0dbd82ffb37d
+langcode: en
+status: true
+dependencies:
+  module:
+    - datetime
+    - node
+id: node.field_next_audit_due
+field_name: field_next_audit_due
+entity_type: node
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,21 +1,15 @@
+uuid: e81bbcd3-3389-443b-a656-9f8833955466
 langcode: en
 status: true
 dependencies:
   config:
-    - node.type.application
     - node.type.article
-    - node.type.contact
-    - node.type.external_link
-    - node.type.landing_page
     - node.type.news
-    - node.type.page
     - node.type.publication
   module:
     - content_moderation
-_core:
-  default_config_hash: Ln7YAg2WXZ-5wn9ib-v9qOKFxF2YZLnwSKtX-V455hE
-id: editorial
-label: Editorial
+id: nics_editorial_workflow
+label: 'NICS Editorial Workflow'
 type: content_moderation
 type_settings:
   states:
@@ -23,24 +17,24 @@ type_settings:
       label: Draft
       published: false
       default_revision: false
-      weight: -5
+      weight: 0
     needs_review:
       published: false
       default_revision: false
       label: 'Needs Review'
-      weight: 6
+      weight: 2
     published:
       label: Published
       published: true
       default_revision: true
-      weight: 0
+      weight: 1
   transitions:
     create_new_draft:
-      label: 'Create new Draft'
-      from:
-        - draft
+      label: 'Create New Draft'
       to: draft
       weight: -3
+      from:
+        - draft
     publish:
       label: Publish
       to: published
@@ -73,12 +67,7 @@ type_settings:
       weight: 2
   entity_types:
     node:
-      - application
       - article
-      - contact
-      - external_link
-      - landing_page
       - news
-      - page
       - publication
   default_moderation_state: draft
