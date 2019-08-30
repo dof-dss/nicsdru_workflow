@@ -1,8 +1,8 @@
+uuid: 3ef2fdf0-94eb-4560-8b80-cb70b38be1e5
 langcode: en
 status: true
 dependencies:
   config:
-    - taxonomy.vocabulary.site_themes
     - user.role.admin_user
     - user.role.administrator
     - user.role.author_user
@@ -19,7 +19,6 @@ dependencies:
     - content_moderation
     - datetime
     - node
-    - taxonomy
     - user
 id: workflow_moderation
 label: 'Workflow: Moderation'
@@ -1394,62 +1393,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_subtheme_target_id:
-          id: field_subtheme_target_id
-          table: node__field_subtheme
-          field: field_subtheme_target_id
-          relationship: nid
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_subtheme_target_id_op
-            label: 'Theme/subtheme (field_subtheme)'
-            description: ''
-            use_operator: false
-            operator: field_subtheme_target_id_op
-            identifier: field_subtheme_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              gp_author_user: '0'
-              author_user: '0'
-              gp_supervisor_user: '0'
-              news_supervisor: '0'
-              supervisor_user: '0'
-              editor_user: '0'
-              admin_user: '0'
-              apps_user: '0'
-              health_condition_author_user: '0'
-              health_condition_supervisor_user: '0'
-              driving_instructor_supervisor_user: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: site_themes
-          hierarchy: true
-          error_message: true
-          plugin_id: taxonomy_index_tid
         moderation_state_1:
           id: moderation_state_1
           table: node_field_revision
@@ -2319,62 +2262,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_subtheme_target_id:
-          id: field_subtheme_target_id
-          table: node__field_subtheme
-          field: field_subtheme_target_id
-          relationship: nid
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_subtheme_target_id_op
-            label: 'Theme/subtheme (field_subtheme)'
-            description: ''
-            use_operator: false
-            operator: field_subtheme_target_id_op
-            identifier: field_subtheme_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              gp_author_user: '0'
-              author_user: '0'
-              gp_supervisor_user: '0'
-              news_supervisor: '0'
-              supervisor_user: '0'
-              editor_user: '0'
-              admin_user: '0'
-              apps_user: '0'
-              health_condition_author_user: '0'
-              health_condition_supervisor_user: '0'
-              driving_instructor_supervisor_user: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: site_themes
-          hierarchy: true
-          error_message: true
-          plugin_id: taxonomy_index_tid
         moderation_state_1:
           id: moderation_state_1
           table: node_field_revision
@@ -2995,7 +2882,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
