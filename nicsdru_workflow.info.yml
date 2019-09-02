@@ -2,7 +2,9 @@ name: 'NICS Workflow'
 type: module
 description: 'NICS Workflow enhancements'
 core: 8.x
-package: 'NICS-Dru'
+package: NICS-Dru
 dependencies:
-  - content_moderation
-  - workflows
+  0: content_moderation
+  1: workflows
+  3: node
+  4: user
