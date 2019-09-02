@@ -4,7 +4,8 @@ description: 'NICS Workflow enhancements'
 core: 8.x
 package: NICS-Dru
 dependencies:
-  0: content_moderation
-  1: workflows
-  3: node
-  4: user
+  - content_moderation
+  - workflows
+  - node
+  - user
+  - menu_ui
