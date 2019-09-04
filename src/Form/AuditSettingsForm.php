@@ -60,7 +60,9 @@ class AuditSettingsForm extends ConfigFormBase {
     $options = [];
     $all_content_types = NodeType::loadMultiple();
     foreach ($all_content_types as $machine_name => $content_type) {
-      $options[$content_type] = $machine_name;
+      if (!in_array($machine_name,['mas_rss','webform'])) {
+        $options[$machine_name] = $content_type->label();
+      }
     }
 
     // '#options' => ['article' => 'article', 'publication' => 'publication'],
