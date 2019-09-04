@@ -53,6 +53,7 @@ function nicsdru_workflow_form_alter(&$form, FormStateInterface $form_state, $fo
   ])) {
     // Hide the audit date for everyone.
     $form['field_next_audit_due']['#access'] = FALSE;
+    return;
   }
 
   // Node edit forms.
