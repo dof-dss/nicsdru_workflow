@@ -60,16 +60,16 @@ class AuditSettingsForm extends ConfigFormBase {
     $options = [];
     $all_content_types = NodeType::loadMultiple();
     foreach ($all_content_types as $machine_name => $content_type) {
-      if (!in_array($machine_name,['mas_rss','webform'])) {
+      if (!in_array($machine_name, ['mas_rss', 'webform'])) {
         $options[$machine_name] = $content_type->label();
       }
     }
 
-    // '#options' => ['article' => 'article', 'publication' => 'publication'],
+    // '#options' => ['article' => 'article', 'publication' => 'publication'],.
     $form['content_types_to_audit'] = [
       '#type' => 'checkboxes',
       '#options' => $options,
-      '#title' => $this->t('Content types to be audited')
+      '#title' => $this->t('Content types to be audited'),
     ];
 
     return parent::buildForm($form, $form_state);
