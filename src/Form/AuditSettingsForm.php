@@ -4,6 +4,7 @@ namespace Drupal\nicsdru_workflow\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\NodeType;
 
 /**
  * Implements admin form to allow setting of audit text.
@@ -53,6 +54,20 @@ class AuditSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Audit confirmation text'),
       '#description' => $this->t('Ask the editor to confirm that they have audited the content.'),
       '#default_value' => $config->get('audit_confirmation_text'),
+    ];
+
+    // Get a list of all content types.
+    $options = [];
+    $all_content_types = NodeType::loadMultiple();
+    foreach ($all_content_types as $machine_name => $content_type) {
+      $options[$content_type] = $machine_name;
+    }
+
+    // '#options' => ['article' => 'article', 'publication' => 'publication'],
+    $form['content_types_to_audit'] = [
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#title' => $this->t('Content types to be audited')
     ];
 
     return parent::buildForm($form, $form_state);
