@@ -65,11 +65,11 @@ class AuditSettingsForm extends ConfigFormBase {
       }
     }
 
-    // '#options' => ['article' => 'article', 'publication' => 'publication'],.
-    $form['content_types_to_audit'] = [
+    $form['audit_content_types'] = [
       '#type' => 'checkboxes',
       '#options' => $options,
       '#title' => $this->t('Content types to be audited'),
+      '#default_value'=> $config->get('audit_content_types')
     ];
 
     return parent::buildForm($form, $form_state);
@@ -85,6 +85,7 @@ class AuditSettingsForm extends ConfigFormBase {
       ->set('audit_button_text', $form_state->getValue('audit_button_text'))
       ->set('audit_button_hover_text', $form_state->getValue('audit_button_hover_text'))
       ->set('audit_confirmation_text', $form_state->getValue('audit_confirmation_text'))
+      ->set('audit_content_types', $form_state->getValue('audit_content_types'))
       ->save();
   }
 
