@@ -2,6 +2,7 @@
 
 namespace Drupal\nicsdru_workflow\Form;
 
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Messenger\MessengerInterface;
@@ -204,16 +205,12 @@ class AuditSettingsForm extends ConfigFormBase {
       ]);
       $field->save();
 
-      $display_repository = \Drupal::service('entity_display.repository');
-
       // Assign widget settings for the default form mode.
-      if (method_exists($display_repository, 'getFormDisplay')) {
-        $form_display = $display_repository->getFormDisplay('node', $type);
-        if (isset($form_display)) {
-          $form_display->setComponent('field_next_audit_due', [
-            'type' => 'datetime_default',
-          ])->save();
-        }
+      $entity_form_display = EntityFormDisplay::load('node.' . $type . '.default');
+      if (isset($entity_form_display)) {
+        $entity_form_display->setComponent('field_next_audit_due', [
+          'type' => 'datetime_default',
+        ])->save();
       }
 
       // Assign display settings for the 'default' and 'teaser' view mode.
