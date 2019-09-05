@@ -158,9 +158,9 @@ class AuditSettingsForm extends ConfigFormBase {
   }
 
   /**
-   *
+   * Remove audit field from the content type.
    */
-  public function removeAuditField($type) {
+  private function removeAuditField($type) {
     // Remove audit field from this content type.
     $field = FieldConfig::loadByName('node', $type, 'field_next_audit_due');
     if (!empty($field)) {
@@ -189,9 +189,9 @@ class AuditSettingsForm extends ConfigFormBase {
   }
 
   /**
-   *
+   * Add audit field to the content type.
    */
-  public function addAuditField($type) {
+  private function addAuditField($type) {
     // Add an audit field to the content type.
     $field_storage = FieldStorageConfig::loadByName('node', 'field_next_audit_due');
     $field = FieldConfig::loadByName('node', $type, 'field_next_audit_due');
