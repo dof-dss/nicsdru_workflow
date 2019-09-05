@@ -45,23 +45,27 @@ function nicsdru_workflow_entity_presave(EntityInterface $entity) {
 function nicsdru_workflow_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // Manage access to 'next audit date' field.
 
+  // Get a list of audited content types.
+  $config = \Drupal::config('nicsdru_workflow.auditsettings');
+  $audit_types = $config->get('audit_content_types');
+  $view_form_list = [];
+  $edit_form_list = [];
+  foreach($audit_types as $this_type) {
+    if ($this_type) {
+      $view_form_list[] = 'node_' . $this_type . '_form';
+      $edit_form_list[] = 'node_' . $this_type . '_edit_form';
+    }
+  }
+
   // Node add forms.
-  if (in_array($form_id, [
-    'node_article_form',
-    'node_contact_form',
-    'node_page_form',
-  ])) {
+  if (in_array($form_id, $view_form_list)) {
     // Hide the audit date for everyone.
     $form['field_next_audit_due']['#access'] = FALSE;
     return;
   }
 
   // Node edit forms.
-  if (in_array($form_id, [
-    'node_article_edit_form',
-    'node_contact_edit_form',
-    'node_page_edit_form',
-  ])) {
+  if (in_array($form_id, $edit_form_list)) {
     $account = \Drupal::entityTypeManager()->getStorage('user')->load(\Drupal::currentUser()->id());
     // Check user access level.
     if ($account->hasRole('administrator')) {
