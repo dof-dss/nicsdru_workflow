@@ -213,16 +213,6 @@ class AuditSettingsForm extends ConfigFormBase {
         ])->save();
       }
 
-      // Assign display settings for the 'default' and 'teaser' view mode.
-      if (method_exists($display_repository, 'getViewDisplay')) {
-        $display_repository->getViewDisplay('node', $type)
-          ->setComponent('field_next_audit_due', [
-            'label' => 'hidden',
-            'type' => 'text_default',
-          ])
-          ->save();
-      }
-
       // Log it.
       $this->logger->notice(t("Content auditing enabled for @type", ['@type' => $type]));
 
