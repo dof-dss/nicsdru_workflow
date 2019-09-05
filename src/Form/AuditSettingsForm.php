@@ -84,7 +84,6 @@ class AuditSettingsForm extends ConfigFormBase {
     parent::submitForm($form, $form_state);
 
     // Check to see if any new content types have been selected.
-    // TODO see if any removed !
     $config = $this->config('nicsdru_workflow.auditsettings');
     $old_content_type_list = $config->get('audit_content_types');
     $new_content_type_list = $form_state->getValue('audit_content_types');
