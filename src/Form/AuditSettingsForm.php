@@ -88,10 +88,18 @@ class AuditSettingsForm extends ConfigFormBase {
     $config = $this->config('nicsdru_workflow.auditsettings');
     $old_content_type_list = $config->get('audit_content_types');
     $new_content_type_list = $form_state->getValue('audit_content_types');
+    // Find content types that have just been added.
     foreach($new_content_type_list as $this_type) {
       if (!$this_type) continue;
       if (!$old_content_type_list[$this_type]) {
         $this->addAuditField($this_type);
+      }
+    }
+    // Find content types that have just been removed.
+    foreach($old_content_type_list as $this_type) {
+      if (!$this_type) continue;
+      if (!$new_content_type_list[$this_type]) {
+        $this->removeAuditField($this_type);
       }
     }
 
@@ -101,6 +109,18 @@ class AuditSettingsForm extends ConfigFormBase {
       ->set('audit_confirmation_text', $form_state->getValue('audit_confirmation_text'))
       ->set('audit_content_types', $form_state->getValue('audit_content_types'))
       ->save();
+  }
+
+  public function removeAuditField($type) {
+    // Remove audit field from this content type.
+    $field = FieldConfig::loadByName('node', $type, 'field_next_audit_due');
+    if (!empty($field)) {
+      $field->delete();
+    }
+
+    // Log it.
+    $message = "Content auditing disabled for " . $type;
+    \Drupal::logger('nicsdru_workflow')->notice(t($message));
   }
 
   public function addAuditField($type) {
@@ -120,19 +140,28 @@ class AuditSettingsForm extends ConfigFormBase {
       $display_repository = \Drupal::service('entity_display.repository');
 
       // Assign widget settings for the default form mode.
-      $display_repository->getFormDisplay('node', $type)
-        ->setComponent('field_next_audit_due', [
-          'type' => 'datetime_default',
-        ])
-        ->save();
+      if (method_exists($display_repository, 'getFormDisplay')) {
+        $form_display = $display_repository->getFormDisplay('node', $type);
+        if (isset($form_display)) {
+          $form_display->setComponent('field_next_audit_due', [
+            'type' => 'datetime_default',
+          ])->save();
+        }
+      }
 
       // Assign display settings for the 'default' and 'teaser' view mode.
-      $display_repository->getViewDisplay('node', $type)
-        ->setComponent('field_next_audit_due', [
-          'label' => 'hidden',
-          'type' => 'text_default',
-        ])
-        ->save();
+      if (method_exists($display_repository, 'getViewDisplay')) {
+        $display_repository->getViewDisplay('node', $type)
+          ->setComponent('field_next_audit_due', [
+            'label' => 'hidden',
+            'type' => 'text_default',
+          ])
+          ->save();
+      }
+
+      // Log it.
+      $message = "Content auditing enabled for " . $type;
+      \Drupal::logger('nicsdru_workflow')->notice(t($message));
     }
   }
 
