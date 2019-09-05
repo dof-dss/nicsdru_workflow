@@ -172,7 +172,7 @@ class AuditSettingsForm extends ConfigFormBase {
       if (count($ids) > 0) {
         // Some present, abort.
         $this->messenger->deleteAll();
-        $this->messenger->addError(t('Audit data exists for ' . $type . ' - auditing cannot be disabled'));
+        $this->messenger->addError(t('Audit data exists for @type - auditing cannot be disabled', ['@type' => $type]));
         return FALSE;
       }
 
@@ -180,10 +180,9 @@ class AuditSettingsForm extends ConfigFormBase {
     }
 
     // Log it.
-    $message = "Content auditing disabled for " . $type;
-    $this->logger->notice(t($message));
+    $this->logger->notice(t("Content auditing disabled for @type", ['@type' => $type]));
 
-    $this->messenger->addMessage(t('Auditing successfully disabled for ' . $type));
+    $this->messenger->addMessage(t('Auditing successfully disabled for @type', ['@type' => $type]));
 
     return TRUE;
   }
@@ -228,10 +227,9 @@ class AuditSettingsForm extends ConfigFormBase {
       }
 
       // Log it.
-      $message = "Content auditing enabled for " . $type;
-      $this->logger->notice(t($message));
+      $this->logger->notice(t("Content auditing enabled for @type", ['@type' => $type]));
 
-      $this->messenger->addMessage(t('Auditing successfully enabled for ' . $type));
+      $this->messenger->addMessage(t('Auditing successfully enabled for @type', ['@type' => $type]));
     }
   }
 
