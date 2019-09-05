@@ -2,16 +2,46 @@
 
 namespace Drupal\nicsdru_workflow\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Implements admin form to allow setting of audit text.
  */
 class AuditSettingsForm extends ConfigFormBase {
+
+  /**
+   * A logger instance.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
+
+  /**
+   * Creates a new AuditSettingsForm instance.
+   *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger interface.
+   */
+  public function __construct(LoggerInterface $logger) {
+    $this->logger = $logger;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('logger.factory')->get('nics_audit_settings_form')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -134,7 +164,7 @@ class AuditSettingsForm extends ConfigFormBase {
 
     // Log it.
     $message = "Content auditing disabled for " . $type;
-    \Drupal::logger('nicsdru_workflow')->notice(t($message));
+    $this->logger->notice(t($message));
 
     \Drupal::messenger()->addMessage(t('Auditing successfully disabled for ' . $type));
 
@@ -179,7 +209,7 @@ class AuditSettingsForm extends ConfigFormBase {
 
       // Log it.
       $message = "Content auditing enabled for " . $type;
-      \Drupal::logger('nicsdru_workflow')->notice(t($message));
+      $this->logger->notice(t($message));
 
       \Drupal::messenger()->addMessage(t('Auditing successfully enabled for ' . $type));
     }
