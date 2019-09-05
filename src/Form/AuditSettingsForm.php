@@ -98,7 +98,9 @@ class AuditSettingsForm extends ConfigFormBase {
     foreach($old_content_type_list as $this_type) {
       if (!$this_type) continue;
       if (!$new_content_type_list[$this_type]) {
-        $this->removeAuditField($this_type);
+        if (!$this->removeAuditField($this_type)) {
+          return;
+        }
       }
     }
 
@@ -114,12 +116,29 @@ class AuditSettingsForm extends ConfigFormBase {
     // Remove audit field from this content type.
     $field = FieldConfig::loadByName('node', $type, 'field_next_audit_due');
     if (!empty($field)) {
+      // See if there is any data in this field.
+      $ids = \Drupal::entityQuery('node')
+        ->condition('type', $type)
+        ->exists('field_next_audit_due')
+        ->execute();
+
+      if (count($ids) > 0) {
+        // some present, abort.
+        \Drupal::messenger()->deleteAll();
+        \Drupal::messenger()->addError(t('Audit data exists for ' . $type . ' - auditing cannot be disabled'));
+        return FALSE;
+      }
+
       $field->delete();
     }
 
     // Log it.
     $message = "Content auditing disabled for " . $type;
     \Drupal::logger('nicsdru_workflow')->notice(t($message));
+
+    \Drupal::messenger()->addMessage(t('Auditing successfully disabled for ' . $type));
+
+    return TRUE;
   }
 
   public function addAuditField($type) {
@@ -161,6 +180,8 @@ class AuditSettingsForm extends ConfigFormBase {
       // Log it.
       $message = "Content auditing enabled for " . $type;
       \Drupal::logger('nicsdru_workflow')->notice(t($message));
+
+      \Drupal::messenger()->addMessage(t('Auditing successfully enabled for ' . $type));
     }
   }
 
