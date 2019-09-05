@@ -2,10 +2,9 @@
 
 namespace Drupal\nicsdru_workflow\Form;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\node\Entity\NodeType;
@@ -25,13 +24,23 @@ class AuditSettingsForm extends ConfigFormBase {
   protected $logger;
 
   /**
+   * The messenger service.
+   *
+   * @var \Drupal\Core\Messenger\MessengerInterface
+   */
+  protected $messenger;
+
+  /**
    * Creates a new AuditSettingsForm instance.
    *
    * @param \Psr\Log\LoggerInterface $logger
    *   The logger interface.
+   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
+   *   The messenger service.
    */
-  public function __construct(LoggerInterface $logger) {
+  public function __construct(LoggerInterface $logger, MessengerInterface $messenger) {
     $this->logger = $logger;
+    $this->messenger = $messenger;
   }
 
   /**
@@ -39,7 +48,8 @@ class AuditSettingsForm extends ConfigFormBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('logger.factory')->get('nics_audit_settings_form')
+      $container->get('logger.factory')->get('nics_audit_settings_form'),
+      $container->get('messenger')
     );
   }
 
@@ -101,7 +111,7 @@ class AuditSettingsForm extends ConfigFormBase {
       '#type' => 'checkboxes',
       '#options' => $options,
       '#title' => $this->t('Content types to be audited'),
-      '#default_value'=> $config->get('audit_content_types')
+      '#default_value' => $config->get('audit_content_types'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -118,15 +128,19 @@ class AuditSettingsForm extends ConfigFormBase {
     $old_content_type_list = $config->get('audit_content_types');
     $new_content_type_list = $form_state->getValue('audit_content_types');
     // Find content types that have just been added.
-    foreach($new_content_type_list as $this_type) {
-      if (!$this_type) continue;
+    foreach ($new_content_type_list as $this_type) {
+      if (!$this_type) {
+        continue;
+      }
       if (!$old_content_type_list[$this_type]) {
         $this->addAuditField($this_type);
       }
     }
     // Find content types that have just been removed.
-    foreach($old_content_type_list as $this_type) {
-      if (!$this_type) continue;
+    foreach ($old_content_type_list as $this_type) {
+      if (!$this_type) {
+        continue;
+      }
       if (!$new_content_type_list[$this_type]) {
         if (!$this->removeAuditField($this_type)) {
           return;
@@ -142,6 +156,9 @@ class AuditSettingsForm extends ConfigFormBase {
       ->save();
   }
 
+  /**
+   *
+   */
   public function removeAuditField($type) {
     // Remove audit field from this content type.
     $field = FieldConfig::loadByName('node', $type, 'field_next_audit_due');
@@ -153,9 +170,9 @@ class AuditSettingsForm extends ConfigFormBase {
         ->execute();
 
       if (count($ids) > 0) {
-        // some present, abort.
-        \Drupal::messenger()->deleteAll();
-        \Drupal::messenger()->addError(t('Audit data exists for ' . $type . ' - auditing cannot be disabled'));
+        // Some present, abort.
+        $this->messenger->deleteAll();
+        $this->messenger->addError(t('Audit data exists for ' . $type . ' - auditing cannot be disabled'));
         return FALSE;
       }
 
@@ -166,11 +183,14 @@ class AuditSettingsForm extends ConfigFormBase {
     $message = "Content auditing disabled for " . $type;
     $this->logger->notice(t($message));
 
-    \Drupal::messenger()->addMessage(t('Auditing successfully disabled for ' . $type));
+    $this->messenger->addMessage(t('Auditing successfully disabled for ' . $type));
 
     return TRUE;
   }
 
+  /**
+   *
+   */
   public function addAuditField($type) {
     // Add an audit field to the content type.
     $field_storage = FieldStorageConfig::loadByName('node', 'field_next_audit_due');
@@ -211,7 +231,7 @@ class AuditSettingsForm extends ConfigFormBase {
       $message = "Content auditing enabled for " . $type;
       $this->logger->notice(t($message));
 
-      \Drupal::messenger()->addMessage(t('Auditing successfully enabled for ' . $type));
+      $this->messenger->addMessage(t('Auditing successfully enabled for ' . $type));
     }
   }
 
